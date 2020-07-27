@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = ".;account";
+
+import "google/api/annotations.proto";
+
+message Account {
+    string id = 1;
+    string ownerID = 2;
+    double balance = 3;
+    string type = 4;
+}
+
+message Transaction {
+    string id = 1;
+    string recipientID = 2;
+    string senderID = 3;
+    double amountSent = 4;
+    string senderAccountID = 5;
+    string recipientAccountID = 6;
+}
+
+message GetAccountRequest {
+    string id = 1;
+}
+
+service AccountService {
+    rpc GetAccount (GetAccountRequest) returns (Account) {
+        option (google.api.http) = {
+            get: "/v1/accounts/{id}"
+        };
+    }
+}

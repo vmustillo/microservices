@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/vmustillo/microservices/auth";
+
+import "google/api/annotations.proto";
+
+message User {
+    string id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string fullName = 4;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message PostUserRequest {
+    string firstName = 1;
+    string lastName = 2;
+    string fullName = 3;
+}
+
+message PostUserResponse {
+    User user = 1;
+}
+
+service AuthService {
+    rpc GetUser (GetUserRequest) returns (User) {
+        option (google.api.http) = {
+            get: "/v1/auth/users/{uuid}"
+            body: "*"
+        };
+    }
+
+    rpc PostUser (PostUserRequest) returns (PostUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/auth/users"
+            body: "*"
+        };
+    }
+}
