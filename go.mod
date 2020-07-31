@@ -1,4 +1,4 @@
-module github.com/vmustillo/microservices/accountservice
+module github.com/vmustillo/microservices
 
 go 1.13
 

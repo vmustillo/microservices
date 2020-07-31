@@ -11,7 +11,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1/accounts/{id}": {
+    "/v1/accounts": {
       "get": {
         "operationId": "AccountService_GetAccount",
         "responses": {
@@ -31,8 +31,8 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
