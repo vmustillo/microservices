@@ -10,7 +10,8 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 
-	gw "github.com/vmustillo/microservices/account/gen"
+	account "github.com/vmustillo/microservices/account/gen"
+	auth "github.com/vmustillo/microservices/auth/gen"
 )
 
 var (
@@ -24,7 +25,13 @@ func Run() error {
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := gw.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
+	err := account.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
+	if err != nil {
+		return err
+	}
+
+	authEndpoint := "localhost:4041"
+	err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, *&authEndpoint, opts)
 	if err != nil {
 		return err
 	}

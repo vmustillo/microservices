@@ -62,7 +62,7 @@ func (s *AuthServer) connectDatabase() error {
 
 func main() {
 
-	listener, err := net.Listen("tcp", ":4040")
+	listener, err := net.Listen("tcp", ":4041")
 	if err != nil {
 		panic(err)
 	}
