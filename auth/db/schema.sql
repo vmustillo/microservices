@@ -11,5 +11,8 @@ create table users (
 	first_name varchar(50),
 	last_name varchar(50),
 	full_name varchar(100),
-    account_id varchar(50)
+    account_id UUID,
+    username varchar(100),
+    salt bytea,
+    hashed_password bytea
 );

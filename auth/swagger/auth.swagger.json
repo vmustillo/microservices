@@ -11,6 +11,38 @@
     "application/json"
   ],
   "paths": {
+    "/v1/auth/login": {
+      "post": {
+        "operationId": "AuthService_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AuthService"
+        ]
+      }
+    },
     "/v1/auth/users": {
       "get": {
         "operationId": "AuthService_GetUsers",
@@ -33,12 +65,12 @@
         ]
       },
       "post": {
-        "operationId": "AuthService_PostUser",
+        "operationId": "AuthService_CreateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/PostUserResponse"
+              "$ref": "#/definitions/CreateUserResponse"
             }
           },
           "default": {
@@ -54,7 +86,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/PostUserRequest"
+              "$ref": "#/definitions/CreateUserRequest"
             }
           }
         ],
@@ -65,7 +97,7 @@
     }
   },
   "definitions": {
-    "PostUserRequest": {
+    "CreateUserRequest": {
       "type": "object",
       "properties": {
         "firstName": {
@@ -74,16 +106,38 @@
         "lastName": {
           "type": "string"
         },
-        "fullName": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
           "type": "string"
         }
       }
     },
-    "PostUserResponse": {
+    "CreateUserResponse": {
       "type": "object",
       "properties": {
         "user": {
           "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "LoginRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
         }
       }
     },
@@ -97,9 +151,6 @@
           "type": "string"
         },
         "lastName": {
-          "type": "string"
-        },
-        "fullName": {
           "type": "string"
         },
         "accountID": {

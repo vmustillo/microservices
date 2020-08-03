@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	gw "github.com/vmustillo/microservices/auth/gen"
+	gen "github.com/vmustillo/microservices/auth/gen"
 	pkg "github.com/vmustillo/microservices/auth/pkg"
 )
 
@@ -18,30 +18,55 @@ type AuthServer struct {
 	Db *sql.DB
 }
 
-func (*AuthServer) GetUsers(ctx context.Context, req *gw.GetUsersRequest) (*gw.Users, error) {
-	return &gw.Users{
-		Users: []*gw.User{
-			&gw.User{
+func (s *AuthServer) GetUsers(ctx context.Context, req *gen.GetUsersRequest) (*gen.Users, error) {
+	return &gen.Users{
+		Users: []*gen.User{
+			{
 				Id:        "guid1",
 				AccountID: "accountID1",
 				FirstName: "Vin",
 				LastName:  "M",
-				FullName:  "Vin M",
 			},
 		},
 	}, nil
 }
 
-func (*AuthServer) PostUser(ctx context.Context, req *gw.PostUserRequest) (*gw.PostUserResponse, error) {
-	return &gw.PostUserResponse{
-		User: &gw.User{},
+func (s *AuthServer) CreateUser(ctx context.Context, req *gen.CreateUserRequest) (*gen.CreateUserResponse, error) {
+
+	id, err := pkg.CreateUser(s.Db, req.GetFirstName(), req.GetLastName(), req.GetUsername(), req.GetPassword())
+	if err != nil {
+		log.Println("Error creating user", err)
+
+		return &gen.CreateUserResponse{
+			User: &gen.User{},
+		}, err
+	}
+
+	return &gen.CreateUserResponse{
+		User: &gen.User{
+			Id:        id,
+			FirstName: req.GetFirstName(),
+			LastName:  req.GetLastName(),
+		},
+	}, nil
+}
+
+func (s *AuthServer) Login(ctx context.Context, req *gen.LoginRequest) (*gen.LoginResponse, error) {
+
+	token, err := pkg.Login(s.Db, req.GetUsername(), req.GetPassword())
+	if err != nil {
+		log.Println("Error creating token", err)
+	}
+
+	return &gen.LoginResponse{
+		Token: token,
 	}, nil
 }
 
 func newAuthServer(authSrv *AuthServer) *grpc.Server {
 
 	srv := grpc.NewServer()
-	gw.RegisterAuthServiceServer(srv, authSrv)
+	gen.RegisterAuthServiceServer(srv, authSrv)
 	reflection.Register(srv)
 
 	return srv
