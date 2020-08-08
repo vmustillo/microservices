@@ -31,7 +31,7 @@ func Run() error {
 	}
 
 	authEndpoint := "localhost:4041"
-	err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, *&authEndpoint, opts)
+	err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, authEndpoint, opts)
 	if err != nil {
 		return err
 	}
