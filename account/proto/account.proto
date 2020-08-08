@@ -24,10 +24,25 @@ message GetAccountRequest {
     string id = 1;
 }
 
+message CreateAccountRequest {
+    string user_id = 2;
+}
+
+message CreateAccountResponse {
+    string id = 1;
+}
+
 service AccountService {
     rpc GetAccount (GetAccountRequest) returns (Account) {
         option (google.api.http) = {
             get: "/v1/accounts"
+        };
+    }
+
+    rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse) {
+        option (google.api.http) = {
+            post: "/v1/accounts"
+            body: "*"
         };
     }
 }
