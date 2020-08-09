@@ -41,6 +41,10 @@ func (s *CardServer) ConsumeCards() {
 		case "create":
 			log.Println("Creating Card and associating to account:", string(m.Key))
 			internal.CreateCard(s.Db, string(m.Key), req.GetAccountId())
+			// case "get":
+			// 	log.Println("Getting card information for card: ", string(m.Key))
+			// 	internal.GetCard(s.Db, string(m.Key))
 		}
+
 	}
 }

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/gob"
+	"fmt"
+	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -11,15 +13,17 @@ import (
 	"github.com/google/uuid"
 	kafka "github.com/segmentio/kafka-go"
 	"github.com/vmustillo/microservices/card/gen"
+	"github.com/vmustillo/microservices/card/internal"
 )
 
-func (*CardServer) GetCard(ctx context.Context, req *gen.GetCardRequest) (*gen.Card, error) {
-	return &gen.Card{
-		Id:        "guid1",
-		Number:    "0123-4567-8910-1112",
-		UserId:    "12345",
-		AccountId: "1234",
-	}, nil
+func (s *CardServer) GetCard(ctx context.Context, req *gen.GetCardRequest) (*gen.Card, error) {
+
+	// card := &gen.Card{}
+	log.Println(req.GetNumber())
+	card, _ := internal.GetCardFromDB(s.Db, req.GetNumber())
+	fmt.Println(card)
+
+	return card, nil
 }
 
 func (s *CardServer) CreateCard(ctx context.Context, req *gen.CreateCardRequest) (*gen.Card, error) {

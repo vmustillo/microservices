@@ -7,6 +7,8 @@ import (
 	"log"
 	"math/big"
 	"strings"
+
+	"github.com/vmustillo/microservices/card/gen"
 )
 
 func CreateCard(db *sql.DB, id string, accountID string) (string, error) {
@@ -58,4 +60,19 @@ func generateCardNumber() string {
 	log.Println(b.String())
 
 	return firstFour + b.String()
+}
+
+func GetCardFromDB(db *sql.DB, number string) (*gen.Card, error) {
+	var card gen.Card
+
+	checkStmt := `select id, card_number, account_id from cards where card_number = $1`
+	err := db.QueryRow(checkStmt, number).Scan(&card.Id, &card.Number, &card.AccountId)
+	if err != nil {
+		log.Println("Unable to find record with card number:", number)
+		return &card, err
+	}
+
+	log.Println("Card found:", card)
+
+	return &card, nil
 }
