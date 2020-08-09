@@ -9,6 +9,7 @@
 
 - Holds information regarding an account, such as ID, Credit Limit, Balance, and Owner ID
 - The Account Service can be queried to create an account or retrieve an account based on ID
+- Consumes messages on "accounts" Kafka topic, which can be used to create an account
 
 ### Auth Service
 
@@ -16,6 +17,8 @@
 - This service can be used to create a user or to login
 - Login returns a signed JWT
 - When creating a user, the password is hashed with a random 32 byte string using the Argon 2 Algorithm. The hashed password and salt are stored in the database
+- Consumes messages on "auth" Kafka topic, which can be used to create a user
+- WHen a user is created a message is sent to create an account for that user on the "accounts" Kafka topic
 
 ### Card Service
 
