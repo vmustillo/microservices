@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "account.proto",
+    "title": "payment.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -11,14 +11,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/accounts": {
+    "/v1/payments": {
       "post": {
-        "operationId": "AccountService_CreateAccount",
+        "operationId": "PaymentService_MakePayment",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/CreateAccountResponse"
+              "$ref": "#/definitions/Payment"
             }
           },
           "default": {
@@ -34,82 +34,50 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CreateAccountRequest"
+              "$ref": "#/definitions/MakePaymentRequest"
             }
           }
         ],
         "tags": [
-          "AccountService"
-        ]
-      }
-    },
-    "/v1/accounts/{id}": {
-      "get": {
-        "operationId": "AccountService_GetAccount",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Account"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "AccountService"
+          "PaymentService"
         ]
       }
     }
   },
   "definitions": {
-    "Account": {
+    "MakePaymentRequest": {
       "type": "object",
       "properties": {
-        "id": {
+        "card_number": {
           "type": "string"
         },
-        "ownerID": {
+        "purchaser_account_id": {
           "type": "string"
         },
-        "balance": {
-          "type": "number",
-          "format": "double"
-        },
-        "type": {
+        "purchased_from_account_id": {
           "type": "string"
         },
-        "credit_limit": {
+        "amount": {
           "type": "number",
           "format": "double"
         }
       }
     },
-    "CreateAccountRequest": {
-      "type": "object",
-      "properties": {
-        "user_id": {
-          "type": "string"
-        }
-      }
-    },
-    "CreateAccountResponse": {
+    "Payment": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
+        },
+        "purchaser_account_id": {
+          "type": "string"
+        },
+        "purchased_from_account_id": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double"
         }
       }
     },

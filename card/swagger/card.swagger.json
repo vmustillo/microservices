@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "account.proto",
+    "title": "card.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -11,14 +11,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/accounts": {
+    "/v1/cards": {
       "post": {
-        "operationId": "AccountService_CreateAccount",
+        "operationId": "CardService_CreateCard",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/CreateAccountResponse"
+              "$ref": "#/definitions/Card"
             }
           },
           "default": {
@@ -34,23 +34,23 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CreateAccountRequest"
+              "$ref": "#/definitions/CreateCardRequest"
             }
           }
         ],
         "tags": [
-          "AccountService"
+          "CardService"
         ]
       }
     },
-    "/v1/accounts/{id}": {
+    "/v1/cards/{number}": {
       "get": {
-        "operationId": "AccountService_GetAccount",
+        "operationId": "CardService_GetCard",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/Account"
+              "$ref": "#/definitions/Card"
             }
           },
           "default": {
@@ -62,53 +62,40 @@
         },
         "parameters": [
           {
-            "name": "id",
+            "name": "number",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "AccountService"
+          "CardService"
         ]
       }
     }
   },
   "definitions": {
-    "Account": {
+    "Card": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
         },
-        "ownerID": {
+        "number": {
           "type": "string"
         },
-        "balance": {
-          "type": "number",
-          "format": "double"
-        },
-        "type": {
-          "type": "string"
-        },
-        "credit_limit": {
-          "type": "number",
-          "format": "double"
-        }
-      }
-    },
-    "CreateAccountRequest": {
-      "type": "object",
-      "properties": {
         "user_id": {
           "type": "string"
+        },
+        "account_id": {
+          "type": "string"
         }
       }
     },
-    "CreateAccountResponse": {
+    "CreateCardRequest": {
       "type": "object",
       "properties": {
-        "id": {
+        "account_id": {
           "type": "string"
         }
       }

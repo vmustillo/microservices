@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = ".;gen";
+
+import "google/api/annotations.proto";
+
+message Card {
+    string id = 1;
+    string number = 2;
+    string account_id = 3;
+}
+
+message GetCardRequest {
+    string number = 1;
+}
+
+message CreateCardRequest {
+    string account_id = 1;
+}
+
+service CardService {
+    rpc GetCard(GetCardRequest) returns (Card) {
+        option (google.api.http) = {
+            get: "/v1/cards/{number}"
+        };
+    }
+
+    rpc CreateCard (CreateCardRequest) returns (Card) {
+        option (google.api.http) = {
+            post: "/v1/cards"
+            body: "*"
+        };
+    }
+}

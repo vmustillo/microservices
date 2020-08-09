@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = ".;gen";
+
+import "google/api/annotations.proto";
+
+message Payment {
+    string id = 1;
+    string purchaser_account_id = 2;
+    string purchased_from_account_id = 3;
+    double amount = 4;
+}
+
+message MakePaymentRequest {
+    string card_number = 1;
+    string purchaser_account_id = 2;
+    string purchased_from_account_id = 3;
+    double amount = 4;
+}
+
+service PaymentService {
+    rpc MakePayment(MakePaymentRequest) returns (Payment) {
+        option (google.api.http) = {
+            post: "/v1/payments"
+            body: "*"
+        };
+    }
+}

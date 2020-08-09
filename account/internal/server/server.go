@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -9,13 +10,17 @@ import (
 	"github.com/vmustillo/microservices/account/gen"
 )
 
-func (*AccountServer) GetAccount(ctx context.Context, req *gen.GetAccountRequest) (*gen.Account, error) {
-	return &gen.Account{
-		Id:      "guid1",
-		OwnerID: "ownerID1",
-		Balance: 24560.75,
-		Type:    "Checking",
-	}, nil
+func (s *AccountServer) GetAccount(ctx context.Context, req *gen.GetAccountRequest) (*gen.Account, error) {
+	var acc gen.Account
+
+	log.Println("Getting Account with ID:", req.GetId())
+	checkStmt := `select id, user_id, balance, credit_limit from accounts where id = $1`
+	err := s.Db.QueryRow(checkStmt, req.GetId()).Scan(&acc.Id, &acc.OwnerID, &acc.Balance, &acc.CreditLimit)
+	if err != nil {
+		return &gen.Account{}, err
+	}
+
+	return &acc, nil
 }
 
 func (*AccountServer) CreateAccount(ctx context.Context, req *gen.CreateAccountRequest) (*gen.CreateAccountResponse, error) {
