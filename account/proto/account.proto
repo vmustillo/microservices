@@ -9,6 +9,7 @@ message Account {
     string ownerID = 2;
     double balance = 3;
     string type = 4;
+    double credit_limit = 5;
 }
 
 message Transaction {
@@ -35,7 +36,7 @@ message CreateAccountResponse {
 service AccountService {
     rpc GetAccount (GetAccountRequest) returns (Account) {
         option (google.api.http) = {
-            get: "/v1/accounts"
+            get: "/v1/accounts/{id}"
         };
     }
 

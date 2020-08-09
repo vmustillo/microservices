@@ -12,34 +12,6 @@
   ],
   "paths": {
     "/v1/accounts": {
-      "get": {
-        "operationId": "AccountService_GetAccount",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Account"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "AccountService"
-        ]
-      },
       "post": {
         "operationId": "AccountService_CreateAccount",
         "responses": {
@@ -70,6 +42,36 @@
           "AccountService"
         ]
       }
+    },
+    "/v1/accounts/{id}": {
+      "get": {
+        "operationId": "AccountService_GetAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -88,6 +90,10 @@
         },
         "type": {
           "type": "string"
+        },
+        "credit_limit": {
+          "type": "number",
+          "format": "double"
         }
       }
     },

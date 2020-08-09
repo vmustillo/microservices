@@ -10,6 +10,7 @@ create table accounts (
 	id UUID not null primary key default gen_random_uuid(),
 	owner_id UUID,
 	balance decimal,
+    credit_limit decimal,
 	card_id UUID
 );
 
