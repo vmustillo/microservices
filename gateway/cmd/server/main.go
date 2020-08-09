@@ -13,6 +13,7 @@ import (
 	account "github.com/vmustillo/microservices/account/gen"
 	auth "github.com/vmustillo/microservices/auth/gen"
 	card "github.com/vmustillo/microservices/card/gen"
+	payment "github.com/vmustillo/microservices/payment/gen"
 )
 
 var (
@@ -39,6 +40,12 @@ func Run() error {
 
 	cardsEndpoint := "localhost:4042"
 	err = card.RegisterCardServiceHandlerFromEndpoint(ctx, mux, cardsEndpoint, opts)
+	if err != nil {
+		return err
+	}
+
+	paymentsEndpoint := "localhost:4043"
+	err = payment.RegisterPaymentServiceHandlerFromEndpoint(ctx, mux, paymentsEndpoint, opts)
 	if err != nil {
 		return err
 	}
